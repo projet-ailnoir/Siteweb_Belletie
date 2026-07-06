@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  LES PETITS CHATONS CUISINIERS — Cheeky Chatons, les chatons de Belletie
+  ----------------------------------------------------------------------------
+  Page unique en HTML / CSS / JavaScript "vanilla" (sans librairie).
+  Mise en page inspirée du gabarit « Paradigm Shift » (HTML5 UP) :
+  grands panneaux plein écran qui alternent image / texte, gros titres en
+  majuscules très espacées (police Raleway) — MAIS recolorée aux couleurs
+  de votre logo (bleu ciel, menthe, jaune, rose, crème).
+
+  COMMENT MODIFIER (rappel des 3 langages) :
+   • HTML  = le contenu (textes, sections, images) — dans le <body>.
+   • CSS   = l'apparence (couleurs, polices) — dans <style>, section ":root".
+   • JS    = les interactions (menu, défilement, "lire la suite") — en bas.
+  Pour changer une couleur : modifiez UNE variable dans ":root".
+  ============================================================================
+-->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les petits chatons cuisiniers — Cheeky Chatons de Belletie</title>
+  <meta name="description" content="Les aventures gourmandes de Trico et Loumy, deux chatons cuisiniers au cœur du Périgord, en Dordogne.">
+
+  <!-- Mêmes polices que le gabarit Paradigm Shift :
+       Raleway (titres, en majuscules) + Source Sans Pro (texte courant). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=Caveat:wght@600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======================================================================
+       1) PALETTE — les couleurs du logo. Changez ici, tout se met à jour.
+       (Le gabarit d'origine était noir/blanc + turquoise fluo ; on remplace
+        ce turquoise par le bleu ciel de la marque, plus les couleurs "pop".)
+       ====================================================================== */
+    :root{
+      --bleu:      #57A3E5;   /* bleu ciel — couleur principale (ex-turquoise) */
+      --bleu-fonce:#2F6FB0;
+      --rose:      #E63C82;   /* rose "cheeky" */
+      --jaune:     #F4C33B;   /* jaune "chatons" */
+      --vert:      #8ED0A2;   /* menthe — les collines */
+      --violet:    #7A4F9E;   /* les foulards */
+      --creme:     #FFFDF9;   /* fond clair */
+      --creme-2:   #F6EEDF;   /* fond alterné, plus chaud */
+      --encre:     #26303B;   /* texte : noir chaud, jamais pur */
+
+      --contenu:   1180px;    /* largeur maximale */
+      --rail:      0.14em;    /* espacement des lettres des titres */
+    }
+
+    /* ======================================================================
+       2) BASES
+       ====================================================================== */
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family:'Source Sans 3', system-ui, sans-serif;
+      font-weight:300; font-size:17px; line-height:1.75;
+      color:var(--encre); background:var(--creme); overflow-x:hidden;
+    }
+    /* Titres : Raleway, MAJUSCULES, lettres espacées — la signature du gabarit. */
+    h1,h2,h3{ font-family:'Raleway', sans-serif; text-transform:uppercase;
+      letter-spacing:var(--rail); line-height:1.5; font-weight:800; }
+    p{ margin:0 0 1.3rem; }
+    p:last-child{ margin-bottom:0; }
+    a{ color:var(--bleu-fonce); text-decoration:none; }
+    strong{ font-weight:600; }
+    /* Petit mot manuscrit (police Caveat) — le clin d'œil "note du chef". */
+    .note-chef{ font-family:'Caveat', cursive; text-transform:none; letter-spacing:0;
+      color:var(--violet); font-size:1.5rem; line-height:1.3; }
+
+    /* ======================================================================
+       3) BARRE DE NAVIGATION (collante en haut)
+       ====================================================================== */
+    header.barre{ position:sticky; top:0; z-index:50;
+      background:rgba(255,253,249,.85); backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(38,48,59,.08); }
+    .barre .rangee{ max-width:var(--contenu); margin:0 auto; padding:0 26px;
+      height:62px; display:flex; align-items:center; justify-content:space-between; }
+    .barre .logo-mot{ font-family:'Raleway'; font-weight:800; text-transform:uppercase;
+      letter-spacing:.12em; font-size:.95rem; display:flex; align-items:center; gap:9px; }
+    .barre .logo-mot .pastille{ width:11px; height:11px; border-radius:50%; background:var(--rose); }
+    .barre nav{ display:flex; gap:26px; }
+    .barre nav a{ font-family:'Raleway'; font-weight:600; text-transform:uppercase;
+      letter-spacing:.12em; font-size:.72rem; color:var(--encre); padding:4px 0; position:relative; }
+    .barre nav a::after{ content:""; position:absolute; left:0; bottom:-3px; height:3px; width:0;
+      background:var(--rose); transition:width .25s ease; }
+    .barre nav a:hover::after{ width:100%; }
+    .burger{ display:none; background:none; border:0; font-size:1.5rem; cursor:pointer; color:var(--encre); }
+
+    /* ======================================================================
+       4) INTRO / HÉRO — plein écran, titre d'un côté, logo de l'autre.
+       ====================================================================== */
+    .intro{ min-height:calc(100vh - 62px); display:grid; grid-template-columns:1fr 1fr;
+      align-items:center; }
+    .intro .texte{ padding:60px clamp(26px,5vw,80px); }
+    .intro .kicker{ font-family:'Raleway'; font-weight:600; text-transform:uppercase;
+      letter-spacing:.2em; font-size:.75rem; color:var(--bleu-fonce); margin-bottom:18px; }
+    .intro h1{ font-size:clamp(2.2rem,5vw,3.6rem); margin-bottom:22px; }
+    .intro h1 .rose{ color:var(--rose); }
+    .intro p.accroche{ font-size:1.15rem; max-width:30ch; margin-bottom:30px; }
+    /* Le panneau image : fond bleu ciel dégradé + le logo par-dessus. */
+    .intro .visuel{ position:relative; align-self:stretch; min-height:340px;
+      display:grid; place-items:center; overflow:hidden;
+      background:linear-gradient(160deg,var(--bleu),#8FC2EE 60%,var(--vert)); }
+    /* Le logo a un fond blanc : on l'encadre dans une "carte" blanche arrondie
+       posée sur le panneau coloré — le fond blanc devient ainsi voulu. */
+    .intro .visuel img{ width:min(74%,400px); height:auto; background:#F2F2F0; padding:22px;
+      border-radius:28px; box-shadow:0 18px 34px rgba(38,48,59,.28); position:relative; z-index:2; }
+    /* nuages décoratifs qui flottent (animation CSS pure) */
+    .nuage{ position:absolute; background:#fff; border-radius:100px; opacity:.85;
+      animation:flotte 24s linear infinite; }
+    .nuage.a{ width:120px; height:38px; top:16%; left:-140px; }
+    .nuage.b{ width:80px; height:28px; top:64%; left:-120px; animation-duration:34s; opacity:.7; }
+    @keyframes flotte{ from{ transform:translateX(0); } to{ transform:translateX(140vw); } }
+
+    /* Boutons ronds (style "pilule"), effet de rebond au survol. */
+    .btns{ display:flex; gap:14px; flex-wrap:wrap; }
+    .btn{ display:inline-block; padding:13px 28px; border-radius:999px;
+      font-family:'Raleway'; font-weight:600; text-transform:uppercase; letter-spacing:.12em;
+      font-size:.78rem; cursor:pointer; border:2px solid transparent;
+      transition:transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .18s ease; }
+    .btn:hover{ transform:translateY(-3px); box-shadow:0 12px 22px rgba(38,48,59,.16); }
+    .btn.plein{ background:var(--rose); color:#fff; }
+    .btn.vide{ border-color:var(--bleu-fonce); color:var(--bleu-fonce); }
+
+    /* ======================================================================
+       5) PANNEAUX "SPOTLIGHT" — image + texte, qui ALTERNENT de côté.
+       C'est le motif signature de Paradigm Shift.
+       ====================================================================== */
+    .spot{ display:grid; grid-template-columns:1fr 1fr; align-items:center; min-height:70vh; }
+    .spot .visuel{ align-self:stretch; min-height:320px; position:relative; overflow:hidden; }
+    .spot .texte{ padding:70px clamp(26px,5vw,80px); max-width:640px; }
+    .spot .texte h2{ font-size:clamp(1.5rem,3vw,2.1rem); margin-bottom:8px; }
+    .spot .texte .sous{ font-family:'Caveat',cursive; text-transform:none; letter-spacing:0;
+      font-size:1.5rem; color:var(--violet); margin-bottom:18px; }
+    /* le petit trait coloré sous les titres, comme un soulignage "sticker" */
+    .spot .texte h2::after{ content:""; display:block; width:64px; height:5px; border-radius:5px;
+      background:var(--jaune); margin:14px 0 0; }
+    /* Une section sur deux : on inverse l'ordre (image à droite). */
+    .spot.inverse .visuel{ order:2; }
+
+    /* ======================================================================
+       6) SECTION "CE QUE VOUS TROUVEREZ" — grille d'icônes.
+       ====================================================================== */
+    .bloc{ max-width:var(--contenu); margin:0 auto; padding:90px 26px; }
+    .bloc.centre{ text-align:center; }
+    .bloc h2{ font-size:clamp(1.6rem,3.4vw,2.3rem); }
+    .bloc .intro-txt{ max-width:60ch; margin:14px auto 0; }
+    .grille-icones{ display:grid; grid-template-columns:repeat(3,1fr); gap:30px; margin-top:54px; text-align:left; }
+    .carte-i{ background:#fff; border-radius:20px; padding:30px;
+      border:3px solid var(--encre);
+      box-shadow:8px 8px 0 rgba(38,48,59,.12);          /* ombre plate "sticker" */
+      transition:transform .18s cubic-bezier(.34,1.56,.64,1); }
+    .carte-i:hover{ transform:translateY(-4px); }
+    .carte-i .rond{ width:56px; height:56px; border-radius:16px; display:grid; place-items:center; margin-bottom:16px; }
+    .carte-i h3{ font-size:1rem; margin-bottom:8px; }
+    .carte-i p{ font-size:.95rem; }
+
+    /* ======================================================================
+       7) HISTOIRES — galerie de cartes dépliables ("lire la suite").
+       ====================================================================== */
+    .histoires{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:50px; text-align:left; }
+    .histoire{ background:#fff; border-radius:20px; overflow:hidden; display:flex; flex-direction:column;
+      border:3px solid var(--encre); box-shadow:8px 8px 0 rgba(38,48,59,.12);
+      transition:transform .18s cubic-bezier(.34,1.56,.64,1); }
+    .histoire:hover{ transform:translateY(-4px); }
+    .histoire .couv{ height:120px; display:grid; place-items:center; font-size:2.6rem;
+      border-bottom:3px solid var(--encre); }
+    .histoire .dedans{ padding:22px; display:flex; flex-direction:column; flex:1; }
+    .histoire h3{ font-size:1.05rem; margin-bottom:10px; }
+    .histoire .extrait,.histoire .suite{ font-size:.95rem; color:#4c5560; }
+    .histoire .suite{ display:none; margin-top:10px; }
+    .histoire .suite.ouvert{ display:block; }
+    .histoire .lire{ margin-top:16px; align-self:flex-start; background:none; border:0; cursor:pointer;
+      font-family:'Raleway'; font-weight:600; text-transform:uppercase; letter-spacing:.1em;
+      font-size:.72rem; color:var(--rose); }
+    .histoire .lire:hover{ text-decoration:underline; }
+
+    /* ======================================================================
+       8) APPARITION AU DÉFILEMENT (déclenchée par le JavaScript)
+       ====================================================================== */
+    .apparait{ opacity:0; transform:translateY(28px); transition:opacity .6s ease, transform .6s ease; }
+    .apparait.visible{ opacity:1; transform:none; }
+
+    /* ======================================================================
+       9) PIED DE PAGE
+       ====================================================================== */
+    footer{ background:var(--encre); color:#cdd4dd; text-align:center; padding:70px 26px; }
+    footer .mot{ font-family:'Raleway'; font-weight:800; text-transform:uppercase; letter-spacing:.14em;
+      color:#fff; font-size:1.3rem; margin-bottom:6px; }
+    footer .note-chef{ color:var(--jaune); }
+    footer .mini{ margin-top:18px; font-size:.85rem; color:#8b93a1; }
+
+    /* ======================================================================
+       10) RESPONSIVE — sur téléphone, tout passe en une seule colonne.
+       ====================================================================== */
+    @media (max-width:900px){
+      .grille-icones{ grid-template-columns:repeat(2,1fr); }
+      .histoires{ grid-template-columns:repeat(2,1fr); }
+    }
+    @media (max-width:720px){
+      /* Sur téléphone : on libère les hauteurs (fini le plein écran forcé)
+         pour éviter les panneaux trop hauts et le défilement inutile. */
+      .intro, .spot{ grid-template-columns:1fr; min-height:auto; }
+      .intro .texte{ padding:40px 26px 30px; }
+      .intro .visuel, .spot .visuel{ min-height:260px; order:0 !important; }
+      .spot .texte{ padding:44px 26px; }
+      .spot.inverse .visuel{ order:0; }        /* on garde l'image AU-DESSUS du texte */
+      .bloc{ padding:60px 22px; }
+      .barre nav{ position:absolute; top:62px; left:0; right:0; flex-direction:column; gap:0;
+        background:var(--creme); border-bottom:1px solid rgba(38,48,59,.1);
+        max-height:0; overflow:hidden; transition:max-height .3s ease; }
+      .barre nav.ouvert{ max-height:320px; }
+      .barre nav a{ padding:14px 26px; border-top:1px solid rgba(38,48,59,.06); }
+      .burger{ display:block; }
+      .grille-icones, .histoires{ grid-template-columns:1fr; }
+    }
+    /* Très petits écrans (~320px) : on resserre la marque pour qu'elle
+       tienne bien à côté du bouton ☰, et on réduit un peu le grand titre. */
+    @media (max-width:380px){
+      .barre .logo-mot{ font-size:.8rem; letter-spacing:.05em; gap:7px; }
+      .intro h1{ font-size:2rem; }
+    }
+  </style>
+</head>
+
+<body class="is-preload">
+
+  <!-- ========================= NAVIGATION ========================= -->
+  <header class="barre">
+    <div class="rangee">
+      <div class="logo-mot"><span class="pastille"></span> Chatons de Belletie</div>
+      <button class="burger" id="burger" aria-label="Menu">☰</button>
+      <nav id="menu">
+        <a href="#chatons">Les chatons</a>
+        <a href="#trouver">À découvrir</a>
+        <a href="#histoires">Histoires</a>
+        <a href="#belletie">Belletie</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================ INTRO / HÉRO ============================ -->
+  <section class="intro">
+    <div class="texte">
+      <p class="kicker">La haute cuisine… par des chatons</p>
+      <h1>Les petits<br><span class="rose">chatons</span> cuisiniers</h1>
+      <p class="accroche">Trico et Loumy grandissent à Belletie, en Dordogne — et défient
+        les plus grands chefs de l'Histoire, une bêtise gourmande à la fois.</p>
+      <div class="btns">
+        <a class="btn plein" href="#histoires">Lire les aventures</a>
+        <a class="btn vide" href="#chatons">Faire connaissance</a>
+      </div>
+    </div>
+    <div class="visuel">
+      <span class="nuage a"></span><span class="nuage b"></span>
+      <!-- Votre logo. Il doit rester dans le même dossier que ce fichier. -->
+      <img src="Cheeky_chatons.png" alt="Cheeky Chatons — les chatons de Belletie">
+    </div>
+  </section>
+
+  <!-- ===================== PANNEAU 1 : présentation ===================== -->
+  <section class="spot" id="chatons">
+    <div class="visuel">
+      <!-- Décor "carte postale" du Périgord, dessiné en SVG (aucune photo). -->
+      <svg viewBox="0 0 600 520" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block" aria-hidden="true">
+        <rect width="600" height="520" fill="#8FC2EE"/>
+        <circle cx="500" cy="90" r="42" fill="#F9DA6B"/>
+        <ellipse cx="150" cy="90" rx="55" ry="26" fill="#fff" opacity=".9"/>
+        <ellipse cx="195" cy="78" rx="38" ry="22" fill="#fff" opacity=".9"/>
+        <path d="M0 320 Q150 260 300 315 T600 305 V520 H0 Z" fill="#8ED0A2"/>
+        <path d="M0 380 Q180 330 360 375 T600 365 V520 H0 Z" fill="#6FBB8B"/>
+        <g fill="#5FA97C" transform="translate(90 250)">
+          <rect x="0" y="16" width="20" height="52"/><rect x="20" y="28" width="38" height="40"/>
+          <rect x="58" y="8" width="20" height="60"/>
+          <polygon points="0,16 10,2 20,16"/><polygon points="58,8 68,-8 78,8"/>
+        </g>
+        <g transform="translate(0 430)">
+          <g fill="#F4C33B" stroke="#E1A91F" stroke-width="2">
+            <circle cx="70" cy="20" r="15"/><circle cx="70" cy="20" r="6" fill="#7A4A16" stroke="none"/>
+            <circle cx="520" cy="30" r="14"/><circle cx="520" cy="30" r="6" fill="#7A4A16" stroke="none"/>
+          </g>
+          <g stroke="#3E9A5B" stroke-width="4">
+            <line x1="70" y1="34" x2="70" y2="100"/><line x1="520" y1="42" x2="520" y2="100"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="texte">
+      <h2>Deux chatons, une cuisine de rêve</h2>
+      <p class="sous">et beaucoup, beaucoup de bêtises</p>
+      <p><strong>À Belletie</strong>, un hameau doré du Périgord, deux petits chatons ont décidé
+        que la vie se vivait à table. Entre collines, marchés de village et paniers de noix,
+        ils imaginent, goûtent, renversent et recommencent.</p>
+      <p>Leur rêve&nbsp;? Une assiette si parfaite qu'elle ferait rougir les plus grands chefs de
+        l'Histoire. Leur réalité&nbsp;? Un désastre par jour — et, souvent, un éclair de génie au milieu.</p>
+    </div>
+  </section>
+
+  <!-- ===================== PANNEAU 2 : Trico ===================== -->
+  <section class="spot inverse">
+    <div class="visuel" style="background:#EAF4FF">
+      <!-- "Portrait" de Trico, le Siamois aux yeux bleus. -->
+      <svg viewBox="0 0 400 400" style="width:100%;height:100%;display:block" aria-hidden="true">
+        <circle cx="200" cy="205" r="150" fill="#F3E9DA"/>
+        <polygon points="90,110 130,200 60,190" fill="#5A4636"/>
+        <polygon points="310,110 340,190 270,200" fill="#5A4636"/>
+        <ellipse cx="200" cy="235" rx="120" ry="115" fill="#F7EFE2"/>
+        <ellipse cx="200" cy="250" rx="95" ry="95" fill="#4B3A2C" opacity=".18"/>
+        <circle cx="158" cy="215" r="20" fill="#57A3E5"/><circle cx="242" cy="215" r="20" fill="#57A3E5"/>
+        <circle cx="158" cy="215" r="8" fill="#1c2a3a"/><circle cx="242" cy="215" r="8" fill="#1c2a3a"/>
+        <polygon points="200,250 190,262 210,262" fill="#D98CA6"/>
+        <path d="M200 262 Q200 275 185 278 M200 262 Q200 275 215 278" stroke="#4B3A2C" stroke-width="3" fill="none"/>
+        <!-- foulard violet -->
+        <path d="M120 320 Q200 360 280 320 L300 400 100 400 Z" fill="#7A4F9E"/>
+      </svg>
+    </div>
+    <div class="texte">
+      <h2>Trico</h2>
+      <p class="sous">le perfectionniste au regard orageux</p>
+      <p><strong>Élégant, ambitieux, perfectionniste</strong>&nbsp;: le petit Siamois a le palais
+        fin et dresse ses assiettes au millimètre — jamais un soufflé qui retombe. Mais derrière
+        ses grands yeux bleus gronde une tempête permanente, et d'un coup plus rien n'a de sens&nbsp;:
+        « Je comprends rien… qui&nbsp;? quoi&nbsp;? qu'est-ce qui se passe&nbsp;? on cuisine un truc
+        ou bien&nbsp;?? » Un chef exigeant… et régulièrement complètement perdu.</p>
+      <p class="note-chef">« Un plat, ça se goûte d'abord avec les yeux… mais on cuisine quoi, là, au juste&nbsp;?? »</p>
+    </div>
+  </section>
+
+  <!-- ===================== PANNEAU 3 : Loumy ===================== -->
+  <section class="spot">
+    <div class="visuel" style="background:#F1EAF8">
+      <!-- "Portrait" de Loumy, la petite noire. -->
+      <svg viewBox="0 0 400 400" style="width:100%;height:100%;display:block" aria-hidden="true">
+        <circle cx="200" cy="205" r="150" fill="#2B2530"/>
+        <polygon points="95,105 135,195 60,185" fill="#211C25"/>
+        <polygon points="305,105 340,185 265,195" fill="#211C25"/>
+        <ellipse cx="200" cy="230" rx="120" ry="118" fill="#2B2530"/>
+        <path d="M150 200 l34 8 -30 12 Z" fill="#F4C33B"/>
+        <path d="M250 200 l-34 8 30 12 Z" fill="#F4C33B"/>
+        <circle cx="168" cy="212" r="5" fill="#26303B"/><circle cx="232" cy="212" r="5" fill="#26303B"/>
+        <polygon points="200,244 190,256 210,256" fill="#E86A9B"/>
+        <path d="M205 268 q14 4 26 -2" stroke="#E86A9B" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M200 256 Q200 268 186 271 M200 256 Q200 268 214 271" stroke="#0f0d12" stroke-width="3" fill="none"/>
+        <path d="M120 320 Q200 360 280 320 L300 400 100 400 Z" fill="#7A4F9E"/>
+      </svg>
+    </div>
+    <div class="texte">
+      <h2>Loumy</h2>
+      <p class="sous">la gourmande douce et aventurière</p>
+      <p><strong>Douce, calme et terriblement curieuse</strong>, la petite noire goûte tout,
+        touche à tout et explore le moindre placard sans jamais un poil de peur. Rien ne l'énerve,
+        rien ne l'arrête&nbsp;: c'est souvent elle qui renverse la marmite et déclenche la
+        catastrophe… et parfois elle, aussi, qui trouve l'ingrédient de génie complètement par accident.</p>
+      <p class="note-chef">« Si c'est tombé par terre, c'est que ça voulait être goûté — viens, on va voir derrière cette porte. »</p>
+    </div>
+  </section>
+
+  <!-- ===================== À DÉCOUVRIR (grille d'icônes) ===================== -->
+  <section class="bloc centre" id="trouver" style="background:var(--creme-2)">
+    <h2 class="apparait">Ce que vous trouverez ici</h2>
+    <p class="intro-txt apparait">Un carnet qui grandit avec les chatons — des histoires, des recettes
+      inspirées du terroir, et un petit bout de Dordogne à chaque page.</p>
+    <div class="grille-icones">
+      <div class="carte-i apparait">
+        <div class="rond" style="background:#EAF4FF">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2F6FB0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <h3>Des histoires</h3>
+        <p>Les aventures de Trico et Loumy, saison après saison.</p>
+      </div>
+      <div class="carte-i apparait">
+        <div class="rond" style="background:#FDE9F1">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E63C82" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>
+        </div>
+        <h3>Des recettes</h3>
+        <p>Des plats qui défient les grands chefs, version chatons.</p>
+      </div>
+      <div class="carte-i apparait">
+        <div class="rond" style="background:#EAF7EF">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3E9A5B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s7 4 7 11a7 7 0 0 1-14 0c0-7 7-11 7-11z"/></svg>
+        </div>
+        <h3>Le terroir</h3>
+        <p>Noix, truffe, tomates gorgées de soleil : l'âme du Périgord.</p>
+      </div>
+      <div class="carte-i apparait">
+        <div class="rond" style="background:#FEF6DC">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#E1A91F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+        </div>
+        <h3>Un décor de rêve</h3>
+        <p>Collines dorées et marchés de village, en toile de fond.</p>
+      </div>
+      <div class="carte-i apparait">
+        <div class="rond" style="background:#F1EAF8">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7A4F9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3>Deux caractères</h3>
+        <p>La perfectionniste et le farceur — jamais d'accord, jamais séparés.</p>
+      </div>
+      <div class="carte-i apparait">
+        <div class="rond" style="background:#EAF4FF">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#57A3E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>
+        </div>
+        <h3>Fait maison</h3>
+        <p>Un site codé à la main, que vous pouvez modifier vous-même.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= HISTOIRES ========================= -->
+  <section class="bloc centre" id="histoires">
+    <h2 class="apparait">Le carnet d'aventures</h2>
+    <p class="intro-txt apparait">Une collection qui s'agrandit avec les chatons. Cliquez sur
+      « Lire la suite » pour dérouler chaque histoire.</p>
+    <div class="histoires">
+      <article class="histoire apparait">
+        <div class="couv" style="background:linear-gradient(135deg,#8ED0A2,#57A3E5)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14"/><path d="M6.5 8l.8 11.1a1 1 0 0 0 1 .9h7.4a1 1 0 0 0 1-.9L17.5 8"/><path d="M8 8V5.2a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1V8"/></svg>
+        </div>
+        <div class="dedans">
+          <h3>La grande évasion du confit</h3>
+          <p class="extrait">Loumy a repéré une jarre de confit oubliée. Il ne fallait surtout pas y toucher…</p>
+          <p class="suite">Bien sûr, il y a touché. À eux deux, ils font basculer la jarre, glissent
+            sur une flaque de graisse d'oie et atterrissent dans le panier du marché — direction Sarlat.
+            Trico transforme le désastre en pique-nique digne d'un roi.</p>
+          <button class="lire">Lire la suite →</button>
+        </div>
+      </article>
+      <article class="histoire apparait">
+        <div class="couv" style="background:linear-gradient(135deg,#F4C33B,#E63C82)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg>
+        </div>
+        <div class="dedans">
+          <h3>Duel au marché de Sarlat</h3>
+          <p class="extrait">Un chef étoilé se vante d'avoir la meilleure tomate du Périgord. Trico n'est pas d'accord.</p>
+          <p class="suite">Défi lancé sous les halles : trois tomates, une pincée de sel, un filet d'huile de noix.
+            Les chatons chapardent la plus mûre et la servent au chef les yeux fermés. Verdict du jury de mamies :
+            imbattable.</p>
+          <button class="lire">Lire la suite →</button>
+        </div>
+      </article>
+      <article class="histoire apparait">
+        <div class="couv" style="background:linear-gradient(135deg,#7A4F9E,#E63C82)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a8 8 0 0 1 16 0Z"/><path d="M10 11v6a2 2 0 0 0 4 0v-6"/></svg>
+        </div>
+        <div class="dedans">
+          <h3>Truffes et bêtises</h3>
+          <p class="extrait">La saison de la truffe noire est ouverte. Deux chatons + un cochon truffier = chaos parfumé.</p>
+          <p class="suite">Loumy veut aider à flairer les truffes ; il flaire surtout les ennuis.
+            Après une course-poursuite dans la chênaie, les chatons rentrent couverts de terre… et avec la plus
+            grosse truffe de la vallée sous le menton. Omelette de légende.</p>
+          <button class="lire">Lire la suite →</button>
+        </div>
+      </article>
+      <article class="histoire apparait">
+        <div class="couv" style="background:linear-gradient(135deg,#57A3E5,#2F6FB0)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14h14l-1 5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/><path d="M6.5 14a5.5 5.5 0 0 1 11 0"/><path d="M10 6c0-1 1-1.2 1-2M14 6c0-1 1-1.2 1-2"/></svg>
+        </div>
+        <div class="dedans">
+          <h3>Le soufflé qui refusait de monter</h3>
+          <p class="extrait">Réveillon à Belletie. Trico tente le soufflé parfait. Il reste désespérément plat.</p>
+          <p class="suite">Trois tentatives, trois échecs. C'est Loumy qui, en sautant sur le buffet,
+            fait claquer la porte du four au bon moment — et le quatrième soufflé grimpe enfin, majestueux.
+            Le secret&nbsp;? Un chaton maladroit.</p>
+          <button class="lire">Lire la suite →</button>
+        </div>
+      </article>
+      <article class="histoire apparait">
+        <div class="couv" style="background:linear-gradient(135deg,#8ED0A2,#F4C33B)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-4.5 10-4.5 13 0-3 4.5-10 4.5-13 0Z"/><path d="M16 12l5-3v6z"/><circle cx="7.5" cy="11" r="1" fill="#fff" stroke="none"/></svg>
+        </div>
+        <div class="dedans">
+          <h3>La pêche du dimanche</h3>
+          <p class="extrait">Au bord de la Dordogne, un seul poisson pour deux gourmands. Qui l'aura&nbsp;?</p>
+          <p class="suite">Ni l'un ni l'autre : la truite leur file entre les pattes. Vexés mais inspirés,
+            ils inventent une « truite imaginaire » aux noix et au verjus, si convaincante que le voisin
+            pêcheur en redemande. La meilleure prise, c'était la recette.</p>
+          <button class="lire">Lire la suite →</button>
+        </div>
+      </article>
+      <article class="histoire apparait">
+        <div class="couv" style="background:linear-gradient(135deg,#E1A91F,#7A4F9E)">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6"/></svg>
+        </div>
+        <div class="dedans">
+          <h3>La guerre des noix</h3>
+          <p class="extrait">Le noyer du jardin a tout lâché d'un coup. Deux chatons, mille noix, zéro discipline.</p>
+          <p class="suite">Batailles de coques, cachettes secrètes, une gamelle renversée sur le chat du voisin…
+            Au bout du compte, Trico trie, casse et moud : gâteau aux noix du Périgord pour toute la maisonnée.
+            La paix se signe autour d'une part (chacun).</p>
+          <button class="lire">Lire la suite →</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== PANNEAU FINAL : Belletie ===================== -->
+  <section class="spot inverse" id="belletie">
+    <div class="visuel" style="background:linear-gradient(160deg,#F4C33B,#E1A91F)">
+      <svg viewBox="0 0 600 520" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block" aria-hidden="true">
+        <rect width="600" height="520" fill="#F6C33B"/>
+        <circle cx="470" cy="110" r="60" fill="#FBE08A" opacity=".8"/>
+        <path d="M0 340 Q150 300 300 340 T600 335 V520 H0 Z" fill="#E6A81F"/>
+        <path d="M0 400 Q160 360 320 400 T600 395 V520 H0 Z" fill="#C98A12"/>
+        <g stroke="#8a5f0c" stroke-width="5">
+          <line x1="120" y1="360" x2="120" y2="440"/><line x1="300" y1="370" x2="300" y2="450"/>
+          <line x1="480" y1="360" x2="480" y2="440"/>
+        </g>
+        <g fill="#7A4A16"><circle cx="120" cy="352" r="20"/><circle cx="300" cy="362" r="22"/><circle cx="480" cy="352" r="20"/></g>
+        <g fill="#F4C33B" opacity=".9"><circle cx="120" cy="352" r="9"/><circle cx="300" cy="362" r="10"/><circle cx="480" cy="352" r="9"/></g>
+      </svg>
+    </div>
+    <div class="texte">
+      <h2>Bienvenue à Belletie</h2>
+      <p class="sous">au cœur du Périgord</p>
+      <p><strong>Collines dorées, marchés de village, huile de noix, truffe noire et tomates
+        gorgées de soleil</strong> : c'est ce terroir généreux qui inspire chaque bêtise culinaire
+        des chatons.</p>
+      <p>Un décor de carte postale où l'on cuisine lentement… et où l'on rit beaucoup.</p>
+    </div>
+  </section>
+
+  <!-- ============================ PIED DE PAGE ============================ -->
+  <footer>
+    <div class="mot">Les petits chatons cuisiniers</div>
+    <p class="note-chef">à très vite au jardin&nbsp;!</p>
+    <p class="mini">Un site d'exemple, écrit à la main en HTML, CSS et JavaScript « vanilla ».<br>
+      Mise en page inspirée de « Paradigm Shift » (HTML5 UP), recolorée aux couleurs de la marque.</p>
+  </footer>
+
+  <!-- ======================================================================
+       LE JAVASCRIPT — les interactions. Court et commenté.
+       ====================================================================== -->
+  <script>
+    "use strict";
+
+    /* A) MENU MOBILE : ouvrir/fermer avec ☰ */
+    const burger = document.getElementById('burger');
+    const menu   = document.getElementById('menu');
+    burger.addEventListener('click', () => menu.classList.toggle('ouvert'));
+    menu.querySelectorAll('a').forEach(a =>
+      a.addEventListener('click', () => menu.classList.remove('ouvert')));
+
+    /* B) "LIRE LA SUITE" : déplier / replier le texte d'une histoire */
+    document.querySelectorAll('.histoire .lire').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const suite = btn.previousElementSibling;         // le paragraphe .suite
+        const ouvert = suite.classList.toggle('ouvert');
+        btn.textContent = ouvert ? 'Replier ↑' : 'Lire la suite →';
+      });
+    });
+
+    /* C) APPARITION AU DÉFILEMENT : on ajoute .visible quand l'élément entre à l'écran */
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.apparait').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>
